@@ -2,16 +2,18 @@
 # -*- coding: utf-8 -*-
 # vim: ts=4 sw=4 tw=100 et ai si
 
+import socket
+
 class UDP:
     def __init__(self, ip, port):
         """Class init method."""
+
         self.UDP_IP = ip
         self.UDP_PORT = port
 
-        # self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
     def send(self, msg):
         """Send message through UPD."""
 
-        # self.socket.sendto(msg, (UDP_IP, UDP_PORT))
-        pass
+        self.sock.sendto(bytes(msg, 'utf-8'), (self.UDP_IP, self.UDP_PORT))
