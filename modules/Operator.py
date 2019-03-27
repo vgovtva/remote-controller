@@ -6,6 +6,7 @@ class Operator:
 
     def run(self):
         """Read device input and send it."""
+        self._connection.send("hello there")
         pass
 
     def __init__(self, connection, device):

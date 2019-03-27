@@ -23,7 +23,7 @@ def parse_arguments():
     parser.add_argument("ip", metavar="IP", help=text)
 
     text = "Port on the devise to send controls to."
-    parser.add_argument("port", metavar="PORT", help=text)
+    parser.add_argument("port", type=int, metavar="PORT", help=text)
 
     text = "Controller device path."
     parser.add_argument("device", metavar="CONTROLLER", help=text)
