@@ -6,12 +6,19 @@
 command line tool to send controller input over UDP.
 """
 
+import os
 import sys
 import argparse
 from modules import UDP, Controller, Operator
 
 VERSION = "0.1"
 OWN_NAME = "remote-controller"
+
+def validate_inptut_args(args):
+    """Validate some of the input arguments."""
+
+    if not os.path.exists(args.layout):
+        raise Exception("\n'%s' layout file does not exist" % args.layout)
 
 def parse_arguments():
     """A helper function which parses the input arguments."""
@@ -28,6 +35,9 @@ def parse_arguments():
     text = "Controller device path."
     parser.add_argument("device", metavar="CONTROLLER", help=text)
 
+    text = "Path to controller layout file."
+    parser.add_argument("layout", metavar="LAYOUT", help=text)
+
     text = "Print version and exit."
     parser.add_argument("--version", action="version", help=text, version=VERSION)
 
@@ -38,10 +48,12 @@ def main():
 
     args = parse_arguments()
 
+    validate_inptut_args(args)
+
     connection = UDP.UDP(args.ip, args.port)
     device = Controller.Controller(args.device)
 
-    operator = Operator.Operator(connection, device)
+    operator = Operator.Operator(connection, device, args.layout)
     operator.run()
 
     return 0
