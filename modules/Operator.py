@@ -21,7 +21,8 @@ class Operator:
     def run(self):
         """Read device input and send it."""
 #        self._connection.send("hello there")
-        pass
+        for code, value in self._device.read():
+            print(code, value)
 
     def __init__(self, connection, device, layout):
 
