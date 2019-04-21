@@ -9,7 +9,7 @@ command line tool to send controller input over UDP.
 import os
 import sys
 import argparse
-from modules import UDP, Controller, Operator
+from modules import UDP, Controller, Operator, RakkaProtocol
 
 VERSION = "0.1"
 OWN_NAME = "remote-controller"
@@ -52,8 +52,9 @@ def main():
 
     connection = UDP.UDP(args.ip, args.port)
     device = Controller.Controller(args.device)
+    protocol = RakkaProtocol.RakkaProtocol()
 
-    operator = Operator.Operator(connection, device, args.layout)
+    operator = Operator.Operator(connection, device, protocol, args.layout)
     operator.run()
 
     return 0
