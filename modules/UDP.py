@@ -16,4 +16,4 @@ class UDP:
     def send(self, msg):
         """Send message through UPD."""
 
-        self.sock.sendto(bytes(msg, 'utf-8'), (self.UDP_IP, self.UDP_PORT))
+        self.sock.sendto(msg, (self.UDP_IP, self.UDP_PORT))

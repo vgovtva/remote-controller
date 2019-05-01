@@ -41,17 +41,16 @@ class Operator:
             except Exception as err:
                 raise Exception("\nissue loading the layout file at '%s':\n%s" % (path, err))
 
-        print(layout)
         return layout
 
     def run(self):
         """Read device input and send it."""
-#        self._connection.send("hello there")
         mode = 1
         for code, value in self._device.read():
             func_name = self._get_action(code, mode)
             func = self.actions.get(func_name, actionset.nothing) if func_name else actionset.nothing
             ret = func(value)
+            self._connection.send(self._protocol.to_bytes(ret))
 
     def __init__(self, connection, device, protocol, layout):
 
