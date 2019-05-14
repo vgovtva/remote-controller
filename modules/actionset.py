@@ -7,31 +7,31 @@ def nothing(val):
     pass
 
 class Basic:
-"""A basic action set of Rakka vehicle."""
+    """A basic action set of Rakka vehicle."""
 
-    def accelarate(val):
+    def accelarate(self, val):
 
-        state["speed"] = int((val/1024)*127)
+        self.state["speed"] = int((val/1024)*127)
 
-    def breaking(val):
+    def breaking(self, val):
 
         return {"speed": 0}
 
-    def turn(val):
+    def turn(self, val):
 
-        state["steer"] = int(-(val/32768)*127)
+        self.state["steer"] = int(-(val/32768)*127)
 
-    def nothing(val):
+    def nothing(self, val):
         """Default function. Does nothing."""
 
         pass
 
-    def lights_on(val):
+    def lights_on(self, val):
 
         if val:
-            state["lights"] = 1
+            self.state["lights"] = 1
 
-    def hello_world(val):
+    def hello_world(self, val):
         """Hellow world function."""
 
         if val:

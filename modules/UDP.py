@@ -4,6 +4,8 @@
 
 import socket
 
+_OWN_IP = ""
+
 class UDP:
     def __init__(self, ip, port):
         """Class init method."""
@@ -12,7 +14,7 @@ class UDP:
         self.UDP_PORT = port
 
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        self.sock.bind((ip, port))
+        self.sock.bind((_OWN_IP, port))
 
     def send(self, msg):
         """Send message through UDP."""

@@ -16,13 +16,13 @@ def _create_null_state():
 
 class Operator:
 
-    def _get_action(self, code, mode):
+    def _get_action(self, code, mode, default=None):
         """
         Get the name of function from layout based on button 'code' and current 'mode' the layout is in.
         """
 
         binds = self._layout.get(code, None)
-        return binds.get(mode, None) if binds else None
+        return binds.get(mode, None) if binds else default
 
     def _load_layout(self, path):
         """load the layout configuration for the controller."""
@@ -39,7 +39,7 @@ class Operator:
         """Read device input and send it."""
         mode = 1
         for code, value in self._device.read():
-            func_name = self._get_action(code, mode)
+            func_name = self._get_action(code, mode, default="action_not_found")
             func = getattr(self.actions, func_name, actionset.nothing)
             ret = func(value)
             self._connection.send(self._protocol.to_bytes(self.actions.state))

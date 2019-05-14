@@ -8,7 +8,7 @@ from collections import OrderedDict
 
 _RECEIVE_STRUCT= OrderedDict([
         ("RPM", [0,1]),
-        ("oil_pressure", , [2]),
+        ("oil_pressure", [2]),
         ("eng_temp", [3]),
         ("hydro_oil_temp", [4]),
         ("hydre_oil_level", [5]),
@@ -20,8 +20,8 @@ _RECEIVE_STRUCT= OrderedDict([
         ("scoop_ang", [11]),
         ("main_boom_ang", [12]),
         ("zoom_pos", [13]),
-        ("locks_open", [14])),
-        ("locks_closed", [15])),
+        ("locks_open", [14]),
+        ("locks_closed", [15]),
         ("fork_tilt", [16]),
         ("body_roll", [17]),
         ("body_pitch", [18]),
@@ -87,4 +87,4 @@ class RakkaProtocol:
         for key, idx in _RECEIVE_STRUCT:
             content[key] = int.from_bytes([msg[i] for i in idx], byteorder='big')
 
-       return content
+        return content
