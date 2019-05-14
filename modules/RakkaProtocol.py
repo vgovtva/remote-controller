@@ -4,6 +4,32 @@
 
 """A module that contains a class for converting a dict to Rakkatec protocol."""
 
+from collections import OrderedDict
+
+_RECEIVE_STRUCT= OrderedDict([
+        ("RPM", [0,1]),
+        ("oil_pressure", , [2]),
+        ("eng_temp", [3]),
+        ("hydro_oil_temp", [4]),
+        ("hydre_oil_level", [5]),
+        ("fuel", [6]),
+        ("battary_voltage", [7]),
+        ("main_boon_h_ang", [8]),
+        ("main_boon_v_ang", [9]),
+        ("excavation_boom_ang", [10]),
+        ("scoop_ang", [11]),
+        ("main_boom_ang", [12]),
+        ("zoom_pos", [13]),
+        ("locks_open", [14])),
+        ("locks_closed", [15])),
+        ("fork_tilt", [16]),
+        ("body_roll", [17]),
+        ("body_pitch", [18]),
+        ("steer_ang", [19]),
+        ("traveled_distance", [20,21]),
+        ("speed", [22,23]),
+])
+
 def _int_to_bytes(x):
     """Covert an integer to byte."""
     if abs(x) > 127:
@@ -53,3 +79,12 @@ class RakkaProtocol:
 
         return b''.join(msg)
 
+    @staticmethod
+    def decipher(msg):
+        """Decipher a message sent by Rakka vehicle. Return a dict with '{parameter: value}'."""
+        content = {}
+
+        for key, idx in _RECEIVE_STRUCT:
+            content[key] = int.from_bytes([msg[i] for i in idx], byteorder='big')
+
+       return content
