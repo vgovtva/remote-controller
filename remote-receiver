@@ -1,0 +1,48 @@
+#!/usr/bin/python3
+# -*- coding: utf-8 -*-
+# vim: ts=4 sw=4 tw=100 et ai si
+
+"""
+command line tool to send controller input over UDP.
+"""
+
+import sys
+import json
+import argparse
+from modules import UDP, RakkaProtocol
+
+VERSION = "0.1"
+OWN_NAME = "remote-receiver"
+
+def parse_arguments():
+    """A helper function which parses the input arguments."""
+
+    text = sys.modules[__name__].__doc__
+    parser = argparse.ArgumentParser(description=text, prog=OWN_NAME)
+
+    text = "Port on the devise to send controls to."
+    parser.add_argument("port", type=int, metavar="PORT", help=text)
+
+    text = "Print version and exit."
+    parser.add_argument("--version", action="version", help=text, version=VERSION)
+
+    return parser.parse_args()
+
+def main():
+    """Script entry point after we gained the powerlab group."""
+
+    args = parse_arguments()
+
+    connection = UDP.UDP("", args.port)
+    protocol = RakkaProtocol.RakkaProtocol()
+
+    while True:
+        msg = connection.receive()
+        message = protocol.decipher(msg)
+
+    return 0
+
+# The script entry point.
+if __name__ == "__main__":
+    sys.exit(main())
+
