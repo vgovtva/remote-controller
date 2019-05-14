@@ -14,14 +14,6 @@ def _create_null_state():
 
     return state
 
-def _is_action(func_name):
-    """Helper function to check action is out of 'actionset'."""
-
-    func = getattr(actionset, func_name, None)
-    if not func:
-        return False
-    return callable(func) and func.__module__ == actionset.__name__
-
 class Operator:
 
     def _get_action(self, code, mode):
@@ -48,9 +40,9 @@ class Operator:
         mode = 1
         for code, value in self._device.read():
             func_name = self._get_action(code, mode)
-            func = self.actions.get(func_name, actionset.nothing) if func_name else actionset.nothing
+            func = getattr(self.actions, func_name, actionset.nothing)
             ret = func(value)
-            self._connection.send(self._protocol.to_bytes(ret))
+            self._connection.send(self._protocol.to_bytes(self.actions.state))
 
     def __init__(self, connection, device, protocol, layout):
 
@@ -59,4 +51,4 @@ class Operator:
         self._protocol = protocol
         self._layout = self._load_layout(layout)
         self._state = _create_null_state()
-        self.actions = {func:getattr(actionset, func) for func in dir(actionset) if _is_action(func)}
+        self.actions = actionset.Basic()
