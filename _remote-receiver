@@ -39,6 +39,8 @@ def main():
     while True:
         msg = connection.receive()
         message = protocol.decipher(msg)
+        print(json.dumps(message, separators=(",", ":")))
+        sys.stdout.flush()
 
     return 0
 
