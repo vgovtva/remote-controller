@@ -22,6 +22,13 @@ class Window:
         self.top_level = None
 
 class Toplevel1:
+    def update_dials(self, data):
+        """Update the values of dials."""
+
+        for key in self.dials:
+            if key in data:
+                self.dials[key].set_value(data[key])
+
     def __init__(self, top):
         '''This class configures and populates the toplevel window.
            top is the toplevel containing window.'''
@@ -169,6 +176,15 @@ class Toplevel1:
         self.Custom18.place(relx=0.001, rely=0.55, relheight=0.24, relwidth=0.361
                 , bordermode='ignore')
 
+        self.dials = OrderedDict([("RPM", self.Custom18),
+                                  ("oil_pressure", self.Custom9),
+                                  ("eng_temp", self.Custom8),
+                                  ("fuel", self.Custom4),
+                                  ("battary_voltage", self.Custom5),
+                                  ("body_roll", self.Custom3),
+                                  ("body_pitch", self.Custom2),
+                                  ("speed", self.Custom1),})
+
 def parse_arguments():
     """A helper function which parses the input arguments."""
 
@@ -196,6 +212,16 @@ def parse_arguments():
 
     return parser.parse_args()
 
+def update_dials(proc, window):
+    """A task to update dials."""
+
+    data = proc.get_last_line()
+    # If nothing in stdout of the proc, then there is nothing to do.
+    if not data:
+        return
+
+    data = json.loads(data)
+    window.top_level.update_dials(data)
 
 def main():
     """Main entry point for the script."""
@@ -210,6 +236,10 @@ def main():
 
     if not all([receiver.alive(), controller.alive()]):;
         raise Exception("one of the subprocesses did not start correctly")
+
+    # This allows to call the functions with these arguments later.
+    update_dials_helpers = lambda: update_dials(receiver, window)
+    window.root.after(1/10, update_dials_helpers)
 
     try:
         window.root.mainloop()
