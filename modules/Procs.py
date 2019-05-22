@@ -36,12 +36,29 @@ class Proc:
 
         return str(stdout[-1]) if stdout[-1] else None
 
+    def keep_alive(self, errout=False):
+        """
+        Check if the process is still alive if it is not, restart it. If 'errout' is 'True' do
+        not restart the process and raise error instead.
+        """
+
+        if not self.alive():
+            if errout:
+                raise Exception("process running '%s' died" % self._cmd[0])
+            self.__init__(" ".join(self._cmd))
+
+    def alive(self):
+        """Check whether the process is still alive."""
+
+        return True if not self.proc.poll() else False
+
     def __init__(self, cmd):
         """
         Init method for Proc object. This object is used to control asyncronous processes.
         cmd - a string which represents the command to run.
         """
 
+        self.cmd = None
         self.proc = None
         self.stdout = None
         self.stdin = None
@@ -52,7 +69,8 @@ class Proc:
         if not isinstance(cmd, str):
             raise Exception("invalid input argument type")
 
-        self.proc = sp.Popen(shlex.split(cmd), stdout=sp.PIPE, stdin=sp.PIPE, stderr=sp.PIPE)
+        self._cmd = shlex.split(cmd)
+        self.proc = sp.Popen(self._cmd, stdout=sp.PIPE, stdin=sp.PIPE, stderr=sp.PIPE)
         self.stdout = self.proc.stdout
         self.stdin = self.proc.stdin
         self.stderr = self.proc.stderr
