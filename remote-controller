@@ -2,10 +2,13 @@
 # -*- coding: utf-8 -*-
 # vim: ts=4 sw=4 tw=100 et ai si
 
+import os
 import sys
+import argparse
 from dependencies.viewidget import Dial, Digit
 import tkinter as tk
 import tkinter.ttk as ttk
+from modules import Procs
 
 class Window:
     def __init__(self, top, gui):
@@ -166,12 +169,47 @@ class Toplevel1:
         self.Custom18.place(relx=0.001, rely=0.55, relheight=0.24, relwidth=0.361
                 , bordermode='ignore')
 
+def parse_arguments():
+    """A helper function which parses the input arguments."""
+
+    text = sys.modules[__name__].__doc__
+    parser = argparse.ArgumentParser(description=text, prog=OWN_NAME)
+
+    text = "IP of the devise to send controls to."
+    parser.add_argument("ip", metavar="IP", help=text)
+
+    text = "Port on the devise to send controls to."
+    parser.add_argument("outport", type=int, metavar="OUTPORT", help=text)
+
+    text = "Controller device path."
+    parser.add_argument("device", metavar="CONTROLLER", help=text)
+
+    text = "Path to controller layout file."
+    parser.add_argument("layout", metavar="LAYOUT", help=text)
+
+    text = "Port on the devise to receive data on."
+    parser.add_argument("inport", type=int, metavar="INPORT", help=text)
+
+
+    text = "Print version and exit."
+    parser.add_argument("--version", action="version", help=text, version=VERSION)
+
+    return parser.parse_args()
+
+
 def main():
     """Main entry point for the script."""
+
+    args = parse_arguments()
 
     root = tk.Tk()
     top = Toplevel1(root)
     window = Window(root, top)
+    receiver = Procs.Proc("./_remote-receiver %s" % args.inport)
+    controller = Procs.Proc("./remote-controller %s $s %s %s" % ( args.ip, args.outport, args.controller, args.layout))
+
+    if not all([receiver.alive(), controller.alive()]):;
+        raise Exception("one of the subprocesses did not start correctly")
 
     try:
         window.root.mainloop()
@@ -183,8 +221,4 @@ def main():
 
 if __name__ == '__main__':
     sys.exit(main())
-
-
-
-
 
