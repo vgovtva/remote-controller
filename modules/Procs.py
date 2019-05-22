@@ -6,11 +6,12 @@ import shlex
 import subprocess as sp
 from threading import Thread
 
-def _reader(f,buffer):
+def _reader(f, b):
+    """f - Stream to read. b - buffer to write values to."""
     while True:
-        line=f.read()
+        line = f.read()
         if line:
-            buffer.append(line)
+            b.append(line)
         else:
             break
 
@@ -23,14 +24,15 @@ class Proc:
 
         thread = Thread(target=_reader, args=(self.stdout, self._buffer))
 
-        thread.daemon=True
+        thread.daemon = True
         thread.start()
 
-    def get_last_line(self, timeout=None):
+    def get_last_line(self):
+        """Get last line written by 'self.proc' in stdout."""
 
         stdout = list(self._buffer)
         if stdout:
-            self._buffer=[]
+            self._buffer = []
         else:
             return None
 
