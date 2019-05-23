@@ -3,12 +3,14 @@
 # vim: ts=4 sw=4 tw=100 et ai si
 
 import os
+import cv2
 import sys
 import argparse
 from dependencies.viewidget import Dial, Digit
 import tkinter as tk
 import tkinter.ttk as ttk
 from modules import Procs
+from PIL import Image, ImageTk
 from collections import OrderedDict
 
 VERSION = "0.1"
@@ -26,6 +28,24 @@ class Window:
         self.top_level = None
 
 class Toplevel1:
+
+    def video_loop(self, vs, camera_panel):
+        """Loop which displays the video."""
+
+        try:
+            while True:
+                _, frame = vs.read()
+                frame = imutils.resize(frame, width=300)
+
+                image = cv2.cvtColor(self.frame, cv2.COLOR_BGR2RGB)
+                image = Image.fromarray(image)
+                image = ImageTk.PhotoImage(image)
+
+                camera_panel.configure(image=image)
+                camera_panel.image = image
+        except RuntimeError:
+            pass
+
     def update_dials(self, data):
         """Update the values of dials."""
 
@@ -33,9 +53,14 @@ class Toplevel1:
             if key in data:
                 self.dials[key].set_value(data[key])
 
-    def __init__(self, top):
+    def __init__(self, top, cam1_stream, cam2_stream, cam3_stream):
         '''This class configures and populates the toplevel window.
            top is the toplevel containing window.'''
+
+        self.thread_cam1 = None
+        self.thread_cam2 = None
+        self.thread_cam3 = None
+
         _bgcolor = '#d9d9d9'  # X11 color: 'gray85'
         _fgcolor = '#000000'  # X11 color: 'black'
         _compcolor = '#d9d9d9' # X11 color: 'gray85'
@@ -60,6 +85,7 @@ class Toplevel1:
         self.Labelframe1.configure(text='''Camera 1''')
         self.Labelframe1.configure(background="#d9d9d9")
         self.Labelframe1.configure(width=1610)
+        self.Labelframe1.configure(container=True)
 
         self.Labelframe2 = tk.LabelFrame(top)
         self.Labelframe2.place(relx=0.004, rely=0.668, relheight=0.301
@@ -69,6 +95,7 @@ class Toplevel1:
         self.Labelframe2.configure(text='''Camera 2''')
         self.Labelframe2.configure(background="#d9d9d9")
         self.Labelframe2.configure(width=800)
+        self.Labelframe2.configure(container=True)
 
         self.Labelframe3 = tk.LabelFrame(top)
         self.Labelframe3.place(relx=0.32, rely=0.668, relheight=0.301
@@ -78,6 +105,7 @@ class Toplevel1:
         self.Labelframe3.configure(text='''Camera 3''')
         self.Labelframe3.configure(background="#d9d9d9")
         self.Labelframe3.configure(width=800)
+        self.Labelframe3.configure(container=True)
 
         self.Labelframe4 = tk.LabelFrame(top)
         self.Labelframe4.place(relx=0.637, rely=0.007, relheight=0.962
@@ -189,6 +217,22 @@ class Toplevel1:
                                   ("body_pitch", self.Custom2),
                                   ("speed", self.Custom1)],)
 
+        self.Camera1_panel = tk.Label(self.Labelframe1)
+        self.Camera2_panel = tk.Label(self.Labelframe2)
+        self.Camera3_panel = tk.Label(self.Labelframe3)
+
+        video_loop_helper = self.video_loop(cam1_stream, self.Camera1_panel)
+        self.thread_cam1 = threading.Thread(target=self.video_loop_helper, args=())
+        self.thread_cam1.start()
+
+        video_loop_helper = self.video_loop(cam2_stream, self.Camera2_panel)
+        self.thread_cam2 = threading.Thread(target=self.video_loop_helper, args=())
+        self.thread_cam2.start()
+
+        video_loop_helper = self.video_loop(cam3_stream, self.Camera3_panel)
+        self.thread_cam3 = threading.Thread(target=self.video_loop_helper, args=())
+        self.thread_cam3.start()
+
 def parse_arguments():
     """A helper function which parses the input arguments."""
 
@@ -247,7 +291,10 @@ def main():
     args = parse_arguments()
 
     root = tk.Tk()
-    top = Toplevel1(root)
+    capture1 = cv2.VideoCapute("")
+    capture2 = cv2.VideoCapute("")
+    capture3 = cv2.VideoCapute("")
+    top = Toplevel1(root, caputre1, caputre2, caputre3)
     window = Window(root, top)
     receiver = Procs.Proc("./_remote-receiver %s" % args.inport)
     cmd = "./_remote-controller %s %s %s %s" % (str(args.ip), args.outport, str(args.device), str(args.layout))
