@@ -12,7 +12,7 @@ import argparse
 from modules import UDP, Controller, Operator, RakkaProtocol
 
 VERSION = "0.1"
-OWN_NAME = "remote-controller"
+OWN_NAME = "_remote-controller"
 
 def validate_inptut_args(args):
     """Validate some of the input arguments."""

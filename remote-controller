@@ -9,6 +9,10 @@ from dependencies.viewidget import Dial, Digit
 import tkinter as tk
 import tkinter.ttk as ttk
 from modules import Procs
+from collections import OrderedDict
+
+VERSION = "0.1"
+OWN_NAME = "remote-controller"
 
 class Window:
     def __init__(self, top, gui):
@@ -16,7 +20,7 @@ class Window:
         self.top_level = top
         self.root = top
 
-    def destroy_window():
+    def destroy_window(self):
         # Function which closes the window.
         self.top_level.destroy()
         self.top_level = None
@@ -183,7 +187,7 @@ class Toplevel1:
                                   ("battary_voltage", self.Custom5),
                                   ("body_roll", self.Custom3),
                                   ("body_pitch", self.Custom2),
-                                  ("speed", self.Custom1),})
+                                  ("speed", self.Custom1)],)
 
 def parse_arguments():
     """A helper function which parses the input arguments."""
@@ -221,7 +225,21 @@ def update_dials(proc, window):
         return
 
     data = json.loads(data)
+
     window.top_level.update_dials(data)
+
+    update_dials_helpers = lambda: update_dials(proc, window)
+    window.root.after(100, update_dials(proc, window))
+
+def keep_alive(procs, window):
+    """Keep subprocesses alive."""
+
+    for proc in procs:
+        proc.keep_alive(errout=True)
+        print(proc.get_last_line())
+
+    keep_alive_helper = lambda: keep_alive(procs, window)
+    window.root.after(1000, keep_alive_helper)
 
 def main():
     """Main entry point for the script."""
@@ -232,19 +250,24 @@ def main():
     top = Toplevel1(root)
     window = Window(root, top)
     receiver = Procs.Proc("./_remote-receiver %s" % args.inport)
-    controller = Procs.Proc("./remote-controller %s $s %s %s" % ( args.ip, args.outport, args.controller, args.layout))
+    cmd = "./_remote-controller %s %s %s %s" % (str(args.ip), args.outport, str(args.device), str(args.layout))
+    controller = Procs.Proc(cmd)
 
-    if not all([receiver.alive(), controller.alive()]):;
+    if not all([receiver.alive(), controller.alive()]):
         raise Exception("one of the subprocesses did not start correctly")
 
     # This allows to call the functions with these arguments later.
     update_dials_helpers = lambda: update_dials(receiver, window)
-    window.root.after(1/10, update_dials_helpers)
+    window.root.after(100, update_dials_helpers)
+    keep_alive_helper = lambda: keep_alive([receiver, controller], window)
+    window.root.after(1000, keep_alive_helper)
 
     try:
         window.root.mainloop()
     except KeyboardInterrupt:
         window.destroy_window()
+        for proc in (receiver, controller):
+            proc.kill()
 
     return 0
 

@@ -6,7 +6,7 @@
 
 from evdev import InputDevice, categorize, ecodes, util
 
-_XBOX_btns = {
+_XBOX_BTNS = {
     304: 'BTN_A',
     305: 'BTN_B',
     307: 'BTN_X',
@@ -24,7 +24,7 @@ _XBOX_btns = {
     4: 'JOYS_RIGHT_V', # DOWN is positive
     0: 'JOYS_LEFT_H', # RIGHT is positive
     1: 'JOYS_LEFT_V' # DOWN is positive
-}
+    }
 
 class Controller:
     def read(self):
@@ -39,4 +39,4 @@ class Controller:
 
     def __init__(self, device):
         self._device = InputDevice(device)
-        self._keys = _XBOX_btns
+        self._keys = _XBOX_BTNS

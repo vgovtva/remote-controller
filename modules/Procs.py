@@ -9,7 +9,7 @@ from threading import Thread
 def _reader(f, b):
     """f - Stream to read. b - buffer to write values to."""
     while True:
-        line = f.read()
+        line = f.readline()
         if line:
             b.append(line)
         else:
@@ -32,7 +32,7 @@ class Proc:
 
         stdout = list(self._buffer)
         if stdout:
-            self._buffer = []
+            self._buffer.clear()
         else:
             return None
 
@@ -46,7 +46,9 @@ class Proc:
 
         if not self.alive():
             if errout:
-                raise Exception("process running '%s' died" % self._cmd[0])
+                raise Exception("process running '%s' died with following error:\n%s" %
+                                (self._cmd[0], str(self.stderr.read())))
+
             self.__init__(" ".join(self._cmd))
 
     def alive(self):
@@ -72,10 +74,11 @@ class Proc:
             raise Exception("invalid input argument type")
 
         self._cmd = shlex.split(cmd)
-        self.proc = sp.Popen(self._cmd, stdout=sp.PIPE, stdin=sp.PIPE, stderr=sp.PIPE)
+        self.proc = sp.Popen(self._cmd, stdout=sp.PIPE, stdin=sp.PIPE, stderr=sp.PIPE, universal_newlines=True)
         self.stdout = self.proc.stdout
         self.stdin = self.proc.stdin
         self.stderr = self.proc.stderr
+        self.kill = lambda: self.proc.kill()
 
         # This code is necessary for non-blocking read from other processes
         self._buffer_output()
