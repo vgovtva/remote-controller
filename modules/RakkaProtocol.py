@@ -6,6 +6,8 @@
 
 from collections import OrderedDict
 
+# TODO: This struct does not hold any information about the type of data in each byte. This is
+# something that should be added. Otherwise signed values will not make any sense.
 _RECEIVE_STRUCT= OrderedDict([
         ("RPM", [0,1]),
         ("oil_pressure", [2]),

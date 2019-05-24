@@ -9,7 +9,10 @@ def nothing(val):
     pass
 
 class Basic:
-    """A basic action set of Rakka vehicle."""
+    """
+    A basic action set of Rakka vehicle. These action are used to control the vehicle. The names
+    of these functions are also used in button layout file.
+    """
 
     def accelarate(self, val):
 

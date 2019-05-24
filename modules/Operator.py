@@ -7,13 +7,6 @@
 import yaml
 from modules import actionset
 
-def _create_null_state():
-    """A helper function of creating the inital state of the machine, with everything set to 0."""
-
-    state = {}
-
-    return state
-
 class Operator:
 
     def _get_action(self, code, mode, default=None):
@@ -37,6 +30,11 @@ class Operator:
 
     def run(self):
         """Read device input and send it."""
+
+        # This loop waits for output on the controller(generator). When there is output on the
+        # controller, the # function "_get_action" finds the action the button is supposed to take
+        # based on the key # code of the button and the layout file. Then the function is
+        # automatically executed.
         mode = 1
         for code, value in self._device.read():
             func_name = self._get_action(code, mode, default="action_not_found")
@@ -51,5 +49,4 @@ class Operator:
         self._device = device
         self._protocol = protocol
         self._layout = self._load_layout(layout)
-        self._state = _create_null_state()
         self.actions = actionset.Basic()

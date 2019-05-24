@@ -36,6 +36,8 @@ def main():
     connection = UDP.UDP("", args.port)
     protocol = RakkaProtocol.RakkaProtocol()
 
+    # The main loop of this script, all it does is wait for messages on 'PORT' and then output it is
+    # JSON to stdout.
     while True:
         msg = connection.receive()
         message = protocol.decipher(msg)

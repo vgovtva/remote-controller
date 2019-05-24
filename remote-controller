@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 # vim: ts=4 sw=4 tw=100 et ai si
 
+"""This is an entry script for the GUI program. The pupose of this script is  to get input from
+cmdline and start all apropriate processes and starts the GUI."""
+
 import os
 import sys
 import argparse
@@ -42,7 +45,7 @@ def parse_arguments():
     return parser.parse_args()
 
 def update_dials(proc, window):
-    """A task to update dials."""
+    """Check output of the 'proc'  and if there was output use it to update values on dials."""
 
     data = proc.get_last_line()
     # If nothing in stdout of the proc, then there is nothing to do.
@@ -60,7 +63,7 @@ def keep_alive(procs, window):
     """Keep subprocesses alive."""
 
     for proc in procs:
-        proc.keep_alive(errout=True)
+        proc.keep_alive()
 
     keep_alive_helper = lambda: keep_alive(procs, window)
     window.root.after(1000, keep_alive_helper)
@@ -70,24 +73,27 @@ def main():
 
     args = parse_arguments()
 
+    # Initialize objects to handle the GUI window.
     root = tk.Tk()
     top = Toplevel1(root, args.cams, tk)
     window = Window(root, top)
 
     # Start background processes which will handle controller input and receiving the data from vehicle.
     receiver = Procs.Proc("./_remote-receiver %s" % args.inport)
+
     cmd = "./_remote-controller %s %s %s %s" % (str(args.ip), args.outport, str(args.device), str(args.layout))
     controller = Procs.Proc(cmd)
 
     if not all([receiver.alive(), controller.alive()]):
         raise Exception("one of the subprocesses did not start correctly")
 
-    # Using 'lambda' makes it possible to delay the call of these functions until later.
+    # These calls create delayed  routines which will check outputs from subprocesses.
     update_dials_helpers = lambda: update_dials(receiver, window)
     window.root.after(100, update_dials_helpers)
     keep_alive_helper = lambda: keep_alive([receiver, controller], window)
     window.root.after(1000, keep_alive_helper)
 
+    # This is the main loop of the application.
     try:
         window.root.mainloop()
     except KeyboardInterrupt:
@@ -97,6 +103,7 @@ def main():
 
     return 0
 
+# This is the entry point of the script.
 if __name__ == '__main__':
     sys.exit(main())
 

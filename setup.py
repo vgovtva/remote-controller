@@ -13,7 +13,10 @@
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
 # General Public License for more details.
 
-"""The standard python packaging script."""
+
+"""The standard python packaging script. Not all of the requirement are listed here. Only those
+which are possible to install via pip. There are many more packages which were installed via
+'apt-get'. Unfortunatelly, which ones were not tracked."""
 
 import re
 from setuptools import setup, find_packages
@@ -27,7 +30,8 @@ setup(
     scripts=["remote-controller", "remote-receiver"],
     packages=find_packages(exclude=["test*"]),
     license="GPLv2",
-    install_requires=["argcomplete", "evdev", "PyYAML"], # dependencies
+    install_requires=["argcomplete", "evdev", "PyYAML", "opencv-python", "imutils",
+                      "opencv-contrib-python"], # dependencies
     long_description="""This collection of tools is made for controlling an autonmous vehicle Rakka
                         3000. """)
 

@@ -28,7 +28,7 @@ _XBOX_BTNS = {
 
 class Controller:
     def read(self):
-        """Get input from the controlelr."""
+        """Get input from the controlelr, yields tuple with '(key_code, value of key)."""
 
         for event in self._device.read_loop():
             if event.type in (ecodes.EV_ABS, ecodes.EV_KEY):
