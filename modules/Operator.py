@@ -41,6 +41,7 @@ class Operator:
             func = getattr(self.actions, func_name, actionset.nothing)
             ret = func(value)
             if ret:
+                print(self._protocol.to_bytes(self.actions.state))
                 self._connection.send(self._protocol.to_bytes(self.actions.state))
 
     def __init__(self, connection, device, protocol, layout):

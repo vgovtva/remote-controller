@@ -7,7 +7,9 @@ cmdline and start all apropriate processes and starts the GUI."""
 
 import os
 import sys
+import json
 import argparse
+import tkinter as tk
 from modules import Procs
 from modules.GUI import Window, Toplevel1
 
@@ -44,20 +46,23 @@ def parse_arguments():
 
     return parser.parse_args()
 
-def update_dials(proc, window):
+def update_dials(proc, window, top):
     """Check output of the 'proc'  and if there was output use it to update values on dials."""
 
     data = proc.get_last_line()
     # If nothing in stdout of the proc, then there is nothing to do.
     if not data:
+        update_dials_helpers = lambda: update_dials(proc, window, top)
+        window.root.after(100, update_dials_helpers)
+
         return
 
     data = json.loads(data)
 
-    window.top_level.update_dials(data)
+    top.update_dials(data)
 
-    update_dials_helpers = lambda: update_dials(proc, window)
-    window.root.after(100, update_dials(proc, window))
+    update_dials_helpers = lambda: update_dials(proc, window, top)
+    window.root.after(100, update_dials_helpers)
 
 def keep_alive(procs, window):
     """Keep subprocesses alive."""
@@ -88,7 +93,7 @@ def main():
         raise Exception("one of the subprocesses did not start correctly")
 
     # These calls create delayed  routines which will check outputs from subprocesses.
-    update_dials_helpers = lambda: update_dials(receiver, window)
+    update_dials_helpers = lambda: update_dials(receiver, window, top)
     window.root.after(100, update_dials_helpers)
     keep_alive_helper = lambda: keep_alive([receiver, controller], window)
     window.root.after(1000, keep_alive_helper)

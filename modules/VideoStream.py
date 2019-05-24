@@ -42,4 +42,5 @@ class VideoStream:
         self.frame = frame
         self.width = width
         self.vs = cv2.VideoCapture(url)
+        self.vs.set(cv2.CAP_PROP_BUFFERSIZE, 1)
         self.thread = threading.Thread(target=self.video_loop, args=())

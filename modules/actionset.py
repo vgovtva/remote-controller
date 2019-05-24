@@ -17,6 +17,7 @@ class Basic:
     def accelarate(self, val):
 
         self.state["speed"] = int((val/1024)*127)
+        return 1
 
     def breaking(self, val):
 
@@ -25,6 +26,7 @@ class Basic:
     def turn(self, val):
 
         self.state["steer"] = int(-(val/32768)*127)
+        return 1
 
     def nothing(self, val):
         """Default function. Does nothing."""
@@ -35,6 +37,7 @@ class Basic:
 
         if val:
             self.state["lights"] = 1
+            return 1
 
     def hello_world(self, val):
         """Hello world function."""

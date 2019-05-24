@@ -86,7 +86,7 @@ class RakkaProtocol:
         """Decipher a message sent by Rakka vehicle. Return a dict with '{parameter: value}'."""
         content = {}
 
-        for key, idx in _RECEIVE_STRUCT:
+        for key, idx in _RECEIVE_STRUCT.items():
             content[key] = int.from_bytes([msg[i] for i in idx], byteorder='big')
 
         return content
