@@ -32,6 +32,5 @@ setup(
     license="GPLv2",
     install_requires=["argcomplete", "evdev", "PyYAML", "opencv-python", "imutils",
                       "opencv-contrib-python"], # dependencies
-    long_description="""This collection of tools is made for controlling an autonmous vehicle Rakka
-                        3000. """)
+    long_description="""This collection of tools is made for controlling an autonmous vehicle.""")
 

@@ -91,20 +91,24 @@ def main():
 
     if not all([receiver.alive(), controller.alive()]):
         raise Exception("one of the subprocesses did not start correctly")
+    if not all([receiver.alive(), controller.alive()]):
+        raise Exception("one of the subprocesses did not start correctly")
 
     # These calls create delayed  routines which will check outputs from subprocesses.
     update_dials_helpers = lambda: update_dials(receiver, window, top)
     window.root.after(100, update_dials_helpers)
+
     keep_alive_helper = lambda: keep_alive([receiver, controller], window)
     window.root.after(1000, keep_alive_helper)
 
     # This is the main loop of the application.
     try:
+        window.root.focus_set()
         window.root.mainloop()
     except KeyboardInterrupt:
         window.destroy_window()
-        for proc in (receiver, controller):
-            proc.kill()
+        #for proc in (receiver, controller):
+        #    proc.kill()
 
     return 0
 

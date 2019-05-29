@@ -9,7 +9,7 @@ command line tool to send controller input over UDP.
 import sys
 import json
 import argparse
-from modules import UDP, RakkaProtocol
+from modules import UDP, Protocol
 
 VERSION = "0.1"
 OWN_NAME = "remote-receiver"
@@ -34,7 +34,7 @@ def main():
     args = parse_arguments()
 
     connection = UDP.UDP("", args.port)
-    protocol = RakkaProtocol.RakkaProtocol()
+    protocol = Protocol.Protocol()
 
     # The main loop of this script, all it does is wait for messages on 'PORT' and then output it is
     # JSON to stdout.

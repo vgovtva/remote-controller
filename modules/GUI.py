@@ -52,154 +52,233 @@ class Toplevel1:
         self.style.map('.',background=
             [('selected', _compcolor), ('active',_ana2color)])
 
-        top.geometry("2560x1377+166+0")
-        top.title("RakkaGuiProto")
+        top.title('remote-controller')
+        top.geometry('1680x1050')
         top.configure(background="#d9d9d9")
 
-        self.Labelframe1 = tk.Label(top)
-        self.Labelframe1.place(relx=0.004, rely=0.007, relheight=0.657
+
+        top.frame = tk.Frame(top, relief='ridge', borderwidth=2)
+        top.frame.pack(fill='both', expand=1)
+        
+        #   camera 1
+        top.Labelframe1 = tk.Label(top)
+        top.Labelframe1.place(relx=0.004, rely=0.007, relheight=0.657
                 , relwidth=0.629)
-        self.Labelframe1.configure(relief='groove')
-        self.Labelframe1.configure(foreground="black")
-        self.Labelframe1.configure(text='''Camera 1''')
-        self.Labelframe1.configure(background="#d9d9d9")
-        self.Labelframe1.configure(width=1610)
+        top.Labelframe1.configure(relief='groove')
+        top.Labelframe1.configure(foreground="black")
+        top.Labelframe1.configure(text='''Camera 1''')
+        top.Labelframe1.configure(background="#d9d9d9")
+        top.Labelframe1.configure(width=1610)
 
-        self.Labelframe2 = tk.Label(top)
-        self.Labelframe2.place(relx=0.004, rely=0.668, relheight=0.301
+        #   camera 2
+        top.Labelframe2 = tk.Label(top.frame)
+        top.Labelframe2.place(relx=0.004, rely=0.668, relheight=0.301
                 , relwidth=0.313)
-        self.Labelframe2.configure(relief='groove')
-        self.Labelframe2.configure(foreground="black")
-        self.Labelframe2.configure(text='''Camera 2''')
-        self.Labelframe2.configure(background="#d9d9d9")
-        self.Labelframe2.configure(width=800)
+        top.Labelframe2.configure(relief='groove')
+        top.Labelframe2.configure(foreground="black")
+        top.Labelframe2.configure(text='''Camera 2''')
+        top.Labelframe2.configure(background="#d9d9d9")
+        top.Labelframe2.configure(width=800)
 
-        self.Labelframe3 = tk.Label(top)
-        self.Labelframe3.place(relx=0.32, rely=0.668, relheight=0.301
+        #   Camera 3
+        top.Labelframe3 = tk.Label(top.frame)
+        top.Labelframe3.place(relx=0.32, rely=0.668, relheight=0.301
                 , relwidth=0.313)
-        self.Labelframe3.configure(relief='groove')
-        self.Labelframe3.configure(foreground="black")
-        self.Labelframe3.configure(text='''Camera 3''')
-        self.Labelframe3.configure(background="#d9d9d9")
-        self.Labelframe3.configure(width=800)
+        top.Labelframe3.configure(relief='groove')
+        top.Labelframe3.configure(foreground="black")
+        top.Labelframe3.configure(text='''Camera 3''')
+        top.Labelframe3.configure(background="#d9d9d9")
+        top.Labelframe3.configure(width=800)
 
-        self.Labelframe4 = tk.LabelFrame(top)
-        self.Labelframe4.place(relx=0.637, rely=0.007, relheight=0.962
+        #   Engine parameters
+        top.Labelframe4 = tk.Label(top.frame)
+        top.Labelframe4.place(relx=0.637, rely=0.007, relheight=0.962
                 , relwidth=0.355)
-        self.Labelframe4.configure(relief='groove')
-        self.Labelframe4.configure(foreground="black")
-        self.Labelframe4.configure(text='''Engine parameters''')
-        self.Labelframe4.configure(background="#d9d9d9")
-        self.Labelframe4.configure(width=910)
+        top.Labelframe4.configure(relief='groove')
+        top.Labelframe4.configure(foreground="black")
+        top.Labelframe4.configure(text='''Engine parameters''')
+        top.Labelframe4.configure(background="#d9d9d9")
+        top.Labelframe4.configure(width=910)
 
-        self.TSeparator1 = ttk.Separator(self.Labelframe4)
-        self.TSeparator1.place(relx=-0.011, rely=0.02, relwidth=1
-                , bordermode='ignore')
+        top.TSeparator1 = ttk.Separator(top.Labelframe4)
+        top.TSeparator1.place(relx=-0.011, rely=0.02, relwidth=1,
+                              bordermode='ignore')
 
-        self.TSeparator2 = ttk.Separator(self.Labelframe4)
-        self.TSeparator2.place(relx=0.0, rely=0.306, relwidth=0.989
-                , bordermode='ignore')
-
-        self.TSeparator3 = ttk.Separator(self.Labelframe4)
-        self.TSeparator3.place(relx=0.363, rely=0.306, relheight=0.242
-                , bordermode='ignore')
-        self.TSeparator3.configure(orient="vertical")
-
-        self.TSeparator4 = ttk.Separator(self.Labelframe4)
-        self.TSeparator4.place(relx=0.0, rely=0.55, relwidth=1
-                , bordermode='ignore')
-
+        #
+        #   Dials
+        #
         speed= 0
-        self.Custom1 = Dial(self.Labelframe4, size=300, unit='    Km/h', min = 0, max = 60, value=speed)
-        self.Custom1.place(relx=0.001, rely=0.31, relheight=0.24, relwidth=0.361
+        top.Speed = Dial(top.Labelframe4, size=200, unit='    Km/h', min = 0, max = 10, majorscale=1,casewidth=10, value=speed)
+        top.Speed.place(relx=0.001, rely=0.24, relheight=0.24, relwidth=0.382
                 , bordermode='ignore')
+        top.Speed.itemconfig('face', fill='#d9d9d9')
+        top.Speed.itemconfig('needle', fill='red')
+        top.speedlabel = tk.Label(top.Labelframe4)
+        top.speedlabel.configure(text='''Speed''',font="-family {Arial} -size 11 -weight bold")
+        top.speedlabel.place(relx=0.0001, rely=0.21, relheight=0.02, relwidth=0.34)
+
+        rpm = 0
+        top.RPM = Dial(top.Labelframe4, size=200, unit='\n\nRPM', min = 0, max = 3000, majorscale=200, semimajorscale=0, minorscale=0, casewidth=10, value=rpm)
+        top.RPM.place(relx=0.001, rely=0.473, relheight=0.24, relwidth=0.382
+                , bordermode='ignore')
+        top.RPM.itemconfig('face', fill='#d9d9d9')
+        top.RPM.itemconfig('needle', fill='red')
+        top.rpmlabel = tk.Label(top.Labelframe4)
+        top.rpmlabel.configure(text='''RPM''',font="-family {Arial} -size 11 -weight bold")
+        top.rpmlabel.place(relx=0.0001, rely=0.45, relheight=0.02, relwidth=0.34)
 
         pitch = 0
-        self.Custom2 = Dial(self.Labelframe4, size = 350, unit='    Pitchdeg', min = -60, max = 60, start=180, extent=-180, value=pitch)
-        self.Custom2.place(relx=0.001, rely=0.021, relheight=0.284, relwidth=0.41
+        top.Pitch = Dial(top.Labelframe4, size = 180, unit='    Pitchdeg', min = -40, max = 40, start=180, extent=-180,casewidth=10, value=pitch)
+        top.Pitch.place(relx=0.001, rely=0.036, relheight=0.19, relwidth=0.34
                 , bordermode='ignore')
+        top.pitchlabel = tk.Label(top.Labelframe4)
+        top.pitchlabel.configure(text='''Pitch''',font="-family {Arial} -size 11 -weight bold")
+        top.pitchlabel.place(relx=0.0001, rely=0.004, relheight=0.02, relwidth=0.33)
+
         roll = 0
-        self.Custom3 = Dial(self.Labelframe4, size = 350, unit='    Rolldeg', min = -60, max = 60, start=180, extent=-180, value=roll)
-        self.Custom3.place(relx=0.41, rely=0.021, relheight=0.284, relwidth=0.41
+        top.Roll = Dial(top.Labelframe4, size = 180, unit='    Rolldeg', min = -40, max = 40, start=180, extent=-180,casewidth=10, value=roll)
+        top.Roll.place(relx=0.32, rely=0.036, relheight=0.19, relwidth=0.34
                 , bordermode='ignore')
+        top.rolllabel = tk.Label(top.Labelframe4)
+        top.rolllabel.configure(text='''Roll''',font="-family {Arial} -size 11 -weight bold")
+        top.rolllabel.place(relx=0.32, rely=0.004, relheight=0.02, relwidth=0.35)
+
+        angle = 0
+        top.Angle = Dial(top.Labelframe4, size = 180, unit='    Angledeg', min = -40, max = 40, start=180, extent=-180,casewidth=10, value=angle)
+        top.Angle.place(relx=0.64, rely=0.036, relheight=0.19, relwidth=0.351
+                , bordermode='ignore')
+        top.anglelabel = tk.Label(top.Labelframe4)
+        top.anglelabel.configure(text='''Steering angle''',font="-family {Arial} -size 11 -weight bold")
+        top.anglelabel.place(relx=0.64, rely=0.004, relheight=0.02, relwidth=0.355)
 
         fuel = 0
-        self.Custom4 = Dial(self.Labelframe4, size=200, unit='\n\nFuel%', min = 0, max = 100, value=fuel)
-        self.Custom4.place(relx=0.37, rely=0.31, relheight=0.16, relwidth=0.23
+        top.Fuel = Dial(top.Labelframe4, size=170, unit='\n\nFuel%', min = 0, max = 100,casewidth=10, value=fuel)
+        top.Fuel.place(relx=0.384, rely=0.24, relheight=0.18, relwidth=0.3
                 , bordermode='ignore')
-        voltage = 0
-        self.Custom5 = Dial(self.Labelframe4, size=200, unit='V', min = 10, max = 20,  majorscale=1, value=voltage)
-        self.Custom5.place(relx=0.6, rely=0.31, relheight=0.16, relwidth=0.23
-                , bordermode='ignore')
+        top.fuellabel = tk.Label(top.Labelframe4)
+        top.fuellabel.configure(text='''Fuel level''',font="-family {Arial} -size 11 -weight bold")
+        top.fuellabel.place(relx=0.34, rely=0.21, relheight=0.02, relwidth=0.39)
 
+        voltage = 0
+        top.Voltage = Dial(top.Labelframe4, size=170, unit='V', min = 10, max = 20,  majorscale=1,casewidth=10, value=voltage)
+        top.Voltage.place(relx=0.684, rely=0.24, relheight=0.18, relwidth=0.307
+                , bordermode='ignore')
+        top.batterylabel = tk.Label(top.Labelframe4)
+        top.batterylabel.configure(text='''Battery voltage''',font="-family {Arial} -size 11 -weight bold")
+        top.batterylabel.place(relx=0.64, rely=0.21, relheight=0.02, relwidth=0.355)
+
+        oiltemp = 0
+        top.Oiltemp = Dial(top.Labelframe4, size=170, unit='degC', min = 20, max = 120, casewidth=10, value=oiltemp)
+        top.Oiltemp.place(relx=0.384, rely=0.432, relheight=0.18, relwidth=0.3
+                , bordermode='ignore')
+        top.oiltemplabel = tk.Label(top.Labelframe4)
+        top.oiltemplabel.configure(text='''Oil temp.''',font="-family {Arial} -size 11 -weight bold")
+        top.oiltemplabel.place(relx=0.34, rely=0.407, relheight=0.02, relwidth=0.39)
 
         oillevel = 0
-        self.Custom7 = Dial(self.Labelframe4, size=200, unit='\n\nOil%', min = 0, max = 100, value=fuel)
-        self.Custom7.place(relx=0.6, rely=0.47, relheight=0.16, relwidth=0.23
+        top.Oillevel = Dial(top.Labelframe4, size=170, unit='\n\nOil%', min = 0, max = 100,casewidth=10, value=fuel)
+        top.Oillevel.place(relx=0.684, rely=0.432, relheight=0.18, relwidth=0.307
                 , bordermode='ignore')
+        top.oillevellabel = tk.Label(top.Labelframe4)
+        top.oillevellabel.configure(text='''Oil level''',font="-family {Arial} -size 11 -weight bold")
+        top.oillevellabel.place(relx=0.64, rely=0.407, relheight=0.02, relwidth=0.355)
 
         enginetemp = 0
-        self.Custom8 = Dial(self.Labelframe4, size=200, unit='\n\nEngdegC', min = 0, max = 100, value=enginetemp)
-        self.Custom8.place(relx=0.37, rely=0.63, relheight=0.16, relwidth=0.23
+        top.Enginetemp = Dial(top.Labelframe4, size=170, unit='\n\nEngdegC', min = 0, max = 100,casewidth=10, value=enginetemp)
+        top.Enginetemp.place(relx=0.384, rely=0.625, relheight=0.18, relwidth=0.3
                 , bordermode='ignore')
+        top.enginetemplabel = tk.Label(top.Labelframe4)
+        top.enginetemplabel.configure(text='''Engine temp.''',font="-family {Arial} -size 11 -weight bold")
+        top.enginetemplabel.place(relx=0.34, rely=0.605, relheight=0.02, relwidth=0.39)
 
         engineoilpres = 0
-        self.Custom9 = Dial(self.Labelframe4, size=200, unit='\n\nEngOilpres', min = 0, max = 100, value=enginetemp)
-        self.Custom9.place(relx=0.6, rely=0.63, relheight=0.16, relwidth=0.23
+        top.Engineoilpres = Dial(top.Labelframe4, size=170, unit='\n\nEngPres', min = 0, max = 100,casewidth=10, value=engineoilpres)
+        top.Engineoilpres.place(relx=0.684, rely=0.625, relheight=0.18, relwidth=0.307
                 , bordermode='ignore')
 
-        self.Custom10 = Digit(self.Labelframe4, size=100, fg = 'white')
-        self.Custom10.place(relx=0.001, rely=0.79, relheight=0.075, relwidth=0.1
-                , bordermode='ignore')
-        self.Custom11 = Digit(self.Labelframe4, size=100, fg = 'white')
-        self.Custom11.place(relx=0.07, rely=0.79, relheight=0.075, relwidth=0.1
-                , bordermode='ignore')
-        self.Custom12 = Digit(self.Labelframe4, size=100, fg = 'white')
-        self.Custom12.place(relx=0.14, rely=0.79, relheight=0.075, relwidth=0.1
-                , bordermode='ignore')
-        self.Custom13 = Digit(self.Labelframe4, size=100, fg='white')
-        self.Custom13.place(relx=0.21, rely=0.79, relheight=0.075, relwidth=0.1
-                            , bordermode='ignore')
-        self.Custom14 = Digit(self.Labelframe4, size=100, fg='white')
-        self.Custom14.place(relx=0.28, rely=0.79, relheight=0.075, relwidth=0.1
-                            , bordermode='ignore')
-        oiltemp = 0
-        self.Custom6 = Dial(self.Labelframe4, size=200, unit='degC', min = 20, max = 120, value=oiltemp)
-        self.Custom6.place(relx=0.37, rely=0.47, relheight=0.16, relwidth=0.23
+        top.engineoilpreslabel = tk.Label(top.Labelframe4)
+        top.engineoilpreslabel.configure(text='''Engine oil press.''',font="-family {Arial} -size 11 -weight bold")
+        top.engineoilpreslabel.place(relx=0.64, rely=0.605, relheight=0.02, relwidth=0.355)
+
+        # Distance, warnings/errors and mode
+        distance = 0
+        top.distance = tk.Text(top.Labelframe4)
+        top.distance.configure(background="#d9d9d9")
+        top.distance.insert(tk.INSERT, distance)
+        top.distance.config(state="disabled")
+        top.distance.place(relx=0.002, rely=0.724, relheight=0.02, relwidth=0.382
                 , bordermode='ignore')
 
-        self.Custom15 = Digit(self.Labelframe4, size=100, fg='red', value =1 )
-        self.Custom15.place(relx=0.03, rely=0.88, relheight=0.075, relwidth=0.08
-                            , bordermode='ignore')
+        top.distancelabel = tk.Label(top.Labelframe4)
+        top.distancelabel.configure(text='''Distance traveled''', font="-family {Arial} -size 11 -weight bold")
+        top.distancelabel.place(relx=0.0001, rely=0.7, relheight=0.02, relwidth=0.382)
 
-        self.Custom16 = Digit(self.Labelframe4, size=100, fg='blue')
-        self.Custom16.place(relx=0.15, rely=0.88, relheight=0.075, relwidth=0.08
-                            , bordermode='ignore')
+        top.warninglabel = tk.Label(top.Labelframe4)
+        top.warninglabel.configure(text='''Warnings''', font="-family {Arial} -size 11 -weight bold")
+        top.warninglabel.place(relx=0.0001, rely=0.74, relheight=0.02, relwidth=0.382)
 
-        self.Custom17 = Digit(self.Labelframe4, size=100, fg='green')
-        self.Custom17.place(relx=0.27, rely=0.88, relheight=0.075, relwidth=0.08
-                            , bordermode='ignore')
-        rpm = 0
-        self.Custom18 = Dial(self.Labelframe4, size=300, unit='\n\nRPM', min = 0, max = 5000, majorscale=200, semimajorscale=0, minorscale=0, casewidth=7, value=rpm)
-        self.Custom18.place(relx=0.001, rely=0.55, relheight=0.24, relwidth=0.361
+        error =" "
+        top.error = tk.Text(top.Labelframe4)
+        top.error.configure(background="#d9d9d9")
+        top.error.insert(tk.INSERT, error)
+        top.error.config(state="disabled")
+        top.error.place(relx=0.002, rely=0.764, relheight=0.04, relwidth=0.382
                 , bordermode='ignore')
 
-        self.dials = OrderedDict([("RPM", self.Custom18),
-                                  ("oil_pressure", self.Custom9),
-                                  ("eng_temp", self.Custom8),
-                                  ("fuel", self.Custom4),
-                                  ("battary_voltage", self.Custom5),
-                                  ("body_roll", self.Custom3),
-                                  ("body_pitch", self.Custom2),
-                                  ("speed", self.Custom1)],)
+        top.canvas = tk.Canvas(top.Labelframe4)
+        top.canvas.place(relx=0.0001, rely=0.805, relheight=0.195, relwidth=1
+                , bordermode='ignore')
+        top.canvas.configure(background="#F0F0F0")
+        top.canvas.configure(borderwidth="2")
+        top.canvas.configure(insertbackground="black")
+        top.canvas.configure(relief="ridge")
+        top.canvas.configure(selectbackground="#c4c4c4")
+        top.canvas.configure(selectforeground="black")
+        top.canvas.configure(width=125)
+
+        top.modelabel = tk.Label(top.Labelframe4)
+        top.modelabel.configure(text='''Mode''',font="-family {Arial} -size 11 -weight bold",relief="ridge")
+        top.modelabel.place(relx=0.32, rely=0.81, relheight=0.02, relwidth=0.35)
+
+        top.drivelabel = tk.Label(top.Labelframe4)
+        top.drivelabel.configure(text='''Drive''',font="-family {Arial} -size 11 -weight bold")
+        top.drivelabel.place(relx=0.003, rely=0.83, relheight=0.02, relwidth=0.32)
+
+        top.excalabel = tk.Label(top.Labelframe4)
+        top.excalabel.configure(text='''Excavator''',font="-family {Arial} -size 11 -weight bold")
+        top.excalabel.place(relx=0.32, rely=0.83, relheight=0.02, relwidth=0.32)
+
+        top.tiltlabel = tk.Label(top.Labelframe4)
+        top.tiltlabel.configure(text='''Flotation''',font="-family {Arial} -size 11 -weight bold")
+        top.tiltlabel.place(relx=0.65, rely=0.83, relheight=0.02, relwidth=0.32)
+
+        #
+        # Modes
+        #
+        off = "red"
+        on = "green"
+
+        # if mode = drive top.drive(fill = on), top.exca(fill=off) etc.
+        top.drive = top.canvas.create_oval(50, 60, 150, 160, fill=off)
+        top.exca = top.canvas.create_oval(240, 60, 340, 160, fill=off)
+        top.tilt = top.canvas.create_oval(430, 60, 530, 160, fill=off)
+
+        self.dials = OrderedDict([("RPM", top.RPM),
+                                  ("oil_pressure", top.Engineoilpres),
+                                  ("eng_temp", top.Enginetemp),
+                                  ("fuel", top.Fuel),
+                                  ("battary_voltage", top.Voltage),
+                                  ("body_roll", top.Roll),
+                                  ("body_pitch", top.Pitch),
+                                  ("speed", top.Speed)],)
 
         # First we must initialize all the streams, and only after that we can start them, otherwise
         # we encounter a RuntimeError. Tkinter library doesn't like when OpenCV is trying to
         # initalize a capture while a video loop thread is running.
-        widths = {self.Labelframe3: 300, self.Labelframe2: 300, self.Labelframe1: 900}
+        widths = {top.Labelframe3: 300, top.Labelframe2: 300, top.Labelframe1: 900}
         streams = []
-        for frame, url in zip((self.Labelframe1, self.Labelframe2, self.Labelframe3), cams):
-            streams.append(VideoStream(frame, url, widths[frame]))
+        for frame, url in zip((top.Labelframe1, top.Labelframe2, top.Labelframe3), cams):
+            streams.append(VideoStream(top, frame, url, widths[frame]))
 
         for stream in streams:
             stream.start()

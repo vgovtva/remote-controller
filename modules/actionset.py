@@ -10,7 +10,7 @@ def nothing(val):
 
 class Basic:
     """
-    A basic action set of Rakka vehicle. These action are used to control the vehicle. The names
+    A basic action set of vehicle. These action are used to control the vehicle. The names
     of these functions are also used in button layout file.
     """
 

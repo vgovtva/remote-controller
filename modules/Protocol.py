@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 # vim: ts=4 sw=4 tw=100 et ai si
 
-"""A module that contains a class for converting a dict to Rakkatec protocol."""
+"""A module that contains a class for converting a dict to remote vehicle protocol."""
 
 from collections import OrderedDict
 
@@ -44,13 +44,13 @@ def _bool_to_bytes(x):
 
     return bytes([True if x else False])
 
-class RakkaProtocol:
+class Protocol:
 
     @staticmethod
     def to_bytes(control_dict):
         """
-        A method that converts a dictionary with control intructions/values to a bytes object to
-        control Rakka 3000 vehicle.
+        A method that converts a dictionary with control instructions/values to a bytes object to
+        control remote vehicle.
         """
         msg = []
         msg.append(_int_to_bytes(control_dict.get("speed", 0)))
@@ -83,7 +83,7 @@ class RakkaProtocol:
 
     @staticmethod
     def decipher(msg):
-        """Decipher a message sent by Rakka vehicle. Return a dict with '{parameter: value}'."""
+        """Decipher a message sent by the vehicle. Return a dict with '{parameter: value}'."""
         content = {}
 
         for key, idx in _RECEIVE_STRUCT.items():
