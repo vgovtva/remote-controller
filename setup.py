@@ -1,18 +1,7 @@
 # -*- coding: utf-8 -*-
 # vim: ts=4 sw=4 tw=100 et ai si
 #
-# License: GPLv2
 # Author: Vladislav Govtva<vlad.govtva@gmail.com>
-#
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License, version 2,
-# as published by the Free Software Foundation.
-#
-# This program is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
-# General Public License for more details.
-
 
 """The standard python packaging script. Not all of the requirement are listed here. Only those
 which are possible to install via pip. There are many more packages which were installed via

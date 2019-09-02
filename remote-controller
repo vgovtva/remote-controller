@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 # -*- coding: utf-8 -*-
 # vim: ts=4 sw=4 tw=100 et ai si
+#
+# Author: Vladislav Govtva<vlad.govtva@gmail.com>
 
 """This is an entry script for the GUI program. The pupose of this script is  to get input from
 cmdline and start all apropriate processes and starts the GUI."""
