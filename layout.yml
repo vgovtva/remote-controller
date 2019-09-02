@@ -1,0 +1,34 @@
+# -*- coding: utf-8 -*-
+# vim: ts=4 sw=4 tw=100 et ai si
+#
+
+# This file contains the button layout. The Button names correspond to button codes defined in
+# 'Controller.py'. There are issues with this approach. Primarily. Not all controllers have the
+# same key codes.
+
+# BUTTON LIST
+# 'BTN_A': A on XBOX
+# 'BTN_B': B on XBOX
+# 'BTN_X': X on XBOX
+# 'BTN_Y': Y on XBOX
+# 'BTN_SELECT': SELECT on XBOX
+# 'BTN_START': START on XBOX
+# 'BTN_MODE': XBOX on XBOX
+# "DPAD_H": DPAD X-axis.
+# 'DPAD_V': DPAD Y-axis.
+# 'TRG_RIGHT': RIGHT Trigger on XBOX
+# 'BTN_RB': RIGHT Bumper on XBOX
+# 'TRG_LEFT': LEFT Trigger on XBOX
+# 'BTN_LB': LEFT Bumper on XBOX
+# 'JOYS_RIGHT_H': RIGHT Joystick X-axis on XBOX
+# 'JOYS_RIGHT_V': RIGHT Joystick Y-axis on XBOX
+# 'JOYS_LEFT_H': LEFT Joystick X-axis on XBOX
+# 'JOYS_LEFT_V': LEFT Joystick Y-axis on XBOX
+#}
+
+# VALID LIST OF COMMANDS: actions defined in 'modules/actions.py'
+#
+#
+#
+BTN_A:
+    1: "hello_world"
